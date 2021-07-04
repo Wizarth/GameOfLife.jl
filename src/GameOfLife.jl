@@ -73,15 +73,16 @@ function Base.show(io::IO, mime::MIME"text/html", cell_grid::AbstractMatrix{Cell
 		</style>
 		""")
 	
-	for y in 1:size(cell_grid, 1)
-		for x in 1:size(cell_grid, 2)
-			@inbounds cell = cell_grid[y, x]
-			write(io, """
-				<rect x="$((x-1)*cellWidth)" y=$((y-1)*cellHeight) width="$(cellWidth)" height="$(cellHeight)" class="$(
-				cell === GameOfLife.Live ? "live" : "dead"
-				)" />
-				""")
-		end
+	# CartesianIndices are lazy, so this is efficient
+	for i in CartesianIndices(cell_grid)
+		@inbounds cell = cell_grid[i]
+		# Iteration (and thus destructuring) of CartesianIndex is specifically not supported
+		y, x = Tuple(i)
+		write(io, """
+			<rect x="$((x-1)*cellWidth)" y=$((y-1)*cellHeight) width="$(cellWidth)" height="$(cellHeight)" class="$(
+			cell === GameOfLife.Live ? "live" : "dead"
+			)" />
+			""")
 	end
 	
 	write(io, "</svg>")
