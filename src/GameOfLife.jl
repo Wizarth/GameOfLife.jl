@@ -41,6 +41,11 @@ function Base.show(io::IO, mime::MIME"text/html", vec::AbstractVector{Cell})
 	write(io, """</div>""")
 end
 
+"""
+	Handle displaying the cell grid in a HTML context. Does this by producing a SVG.
+	Originally I did this as HTML (see the AbstractVector/Cell show functions above), but
+	the layout kept crashing my browser at higher cell sizes.
+"""
 function Base.show(io::IO, mime::MIME"text/html", cell_grid::AbstractMatrix{Cell})
 	displayHeight, displayWidth = get(io, :displaysize, (600,600))
 	cellHeight = displayHeight / size(cell_grid, 1)
@@ -118,12 +123,11 @@ function step_cell(cell_grid::AbstractMatrix{Cell})
 end
 
 """
-	step(grid)
+	step_grid(grid)
 
 Produce the next iteration of the grid.
 
-Originall based on https://julialang.org/blog/2016/02/iteration/ boxcar3 
-Now using CircularArray to handle index overflow, because we're going to do more complicated things
+Using CircularArray to handle periodic overflow, because we're going to do more complicated things
 """
 function step_grid(cell_grid::AbstractMatrix{Cell})
 	out = similar(cell_grid)
@@ -137,7 +141,6 @@ function step_grid(cell_grid::AbstractMatrix{Cell})
 	
 	Threads.@threads for it in range
 	#for it in range
-		# If we can safely view into the cell_grid, do so, otherwise create a new 3x3 matrix
 		it_lower = it-range_one
 		it_higher = it+range_one
 		local_region = it_lower:it_higher
