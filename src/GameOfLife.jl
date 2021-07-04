@@ -1,10 +1,6 @@
 module GameOfLife
 
 using CircularArrays
-using Luxor
-
-displaySize = 10
-compactDisplaySize = 2
 
 @enum Cell::UInt8 Live=true Dead=false
 
