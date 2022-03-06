@@ -154,6 +154,8 @@ function step_grid(cell_grid::AbstractMatrix{Cell})
 	out
 end
 
+include("CUDA.jl")
+
 export step_grid, Cell
 
 end # module
