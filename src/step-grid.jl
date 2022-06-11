@@ -2,6 +2,8 @@ export step_grid
 
 using StaticArrays: SVector
 
+import Folds
+
 """
 CircularArray isn't strictly neccessary, except what other implementation can have offsets added/subtracted to every one of its CartesianIndices ?
 
@@ -15,9 +17,11 @@ In future, this might be even more flexible
     ==() produces an invokable type (vs a generic function), so causes specialization and stays fast.
   * The function specifying the state change could also be abstracted
     This seems like it would impact performance?
+
+    Note: This is templated on ArrayT so that the CUDA version correctly overrides
 """
-function step_grid(grid::CircularArray{T,2}) where {T}
-    new_grid = map(CartesianIndices(grid)) do cell_index
+function step_grid(grid::CircularArray{T,2,ArrayT}) where {T, ArrayT}
+    new_grid = Folds.map(CartesianIndices(grid)) do cell_index
         neighbours = SVector(
             # This does hard code the nature of the neighbourhood here
             # If we wanted to make this more generic, we'd have to use a macro

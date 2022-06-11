@@ -4,10 +4,13 @@ authors = ["Peter Newman <wizarth@gmail.com>"]
 version = "0.1.0"
 
 [deps]
+Adapt = "79e6a3ab-5dfb-504d-930d-738a2a938a0e"
 BenchmarkTools = "6e4b80f9-dd63-53aa-95a3-0cdb28fa8baf"
+CUDA = "052768ef-5323-5732-b1bb-66c8b64840ba"
 CircularArrays = "7a955b69-7140-5f4e-a0ed-f168c5e2e749"
 ColorTypes = "3da002f7-5984-5a60-b8a6-cbb66c0b333f"
 FixedPointNumbers = "53c48c17-4a7d-5ca2-90c5-79b7896eea93"
+Folds = "41a02a25-b8f0-4f67-bc48-60067656b558"
 PNGFiles = "f57f5aa1-a3ce-4bc8-8ab9-96f992907883"
 StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
