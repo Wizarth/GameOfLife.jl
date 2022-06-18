@@ -62,9 +62,9 @@ using PNGFiles
 function Base.show(io::IO, mime::MIME"image/png", grid::AbstractMatrix{Cell})
     pixels = map(grid) do cell
         if cell == Live
-            RGB{N0f8}(0,0,0)
+            Gray{N0f8}(0)
         else
-            RGB{N0f8}(1,1,1)
+            Gray{N0f8}(1)
         end
     end
 
