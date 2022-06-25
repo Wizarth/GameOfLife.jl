@@ -9,17 +9,17 @@ import Base: convert, ==
 Base.convert(::Type{Bool}, cell::Cell) = cell == Live
 """
     Convert from Real types.
-    Negative => Dead
-    0 => Live
-    Positive => Live
+    Negative => Live
+    0 => Dead
+    Positive => Dead
 """
-Base.convert(::Type{Cell}, f::Real) = ifelse(signbit(f), Dead, Live)
+Base.convert(::Type{Cell}, f::Real) = ifelse(signbit(f), Live, Dead)
 """
     Convert to Real type (could be Number? Not useful as we don't convert back).
-    Live => Positive 1
-    Dead => Negative 1
+    Live => Negative 1
+    Dead => Positive 1
 """
-Base.convert(::Type{T}, cell::Cell) where { T <: Real} = cell == Live ? one(T) : -one(T)
+Base.convert(::Type{T}, cell::Cell) where { T <: Real} = cell == Live ? -one(T) : one(T)
 
 # const Grid = CircularArray{Cell, 2}
 # const Grid{CellT} = CircularArray{CellT, 2}
