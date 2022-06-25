@@ -2,8 +2,6 @@
     A representation of a specific permutation of a Matrix of an Enum.
 
     This is probably more abstract than is needed, but might pull it out into a stand alone package in future.
-
-    This has a fixed size of 48 bytes, while representing a grid that may be much larger than that.
 """
 struct GridPermutation{EnumT <: Enum}
     key::BigInt
@@ -29,7 +27,7 @@ end
 
 import Base: convert, collect
 
-function Base.convert(t::Type{MatrixT}, perm::GridPermutation) where {CellT <: Enum, MatrixT <: AbstractMatrix{CellT}}
+function Base.convert(t::Type{MatrixT}, perm::GridPermutation{CellT}) where {CellT <: Enum, MatrixT <: AbstractMatrix{CellT}}
     cell_values = instances(CellT)
     num_values = length(cell_values)
     
@@ -48,6 +46,9 @@ end
 """
 Base.collect(perm::GridPermutation) = convert(Matrix{perm.enum}, perm)
 
+"""
+    Gives the maximum key possible for a grid of dims size containing cellT enum.
+"""
 function max_permutation(dims::Tuple{Int,Int}, cellT::Type{EnumT}) where {EnumT <: Enum}
     cell_values = instances(cellT)
     num_values = length(cell_values)
@@ -56,8 +57,12 @@ function max_permutation(dims::Tuple{Int,Int}, cellT::Type{EnumT}) where {EnumT 
 end
 max_permutation(grid::AbstractMatrix) = max_permutation(size(grid), eltype(grid))
 
-random_permutation(dims::Tuple{Int,Int}, cellT::Type{EnumT}) where {EnumT <: Enum} = rand(1:max_permutation(dims, cellT))
+random_permutation(dims::Tuple{Int,Int}, cellT::Type{EnumT}) where {EnumT <: Enum} = GridPermutation(
+    rand(1:max_permutation(dims, cellT)),
+    dims,
+    cellT
+)
 random_permutation(grid::AbstractMatrix) = random_permutation(size(grid), eltype(grid))
 
 # Convenience pseudo-constructor for Grid
-Grid(perm::GridPermutation) = convert(Grid, perm)
+Grid(perm::GridPermutation) = convert(Grid{perm.enum}, perm)

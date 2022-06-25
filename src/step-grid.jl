@@ -54,6 +54,12 @@ function step_grid(grid::CircularArray{T,2,ArrayT}) where {T, ArrayT}
         end
     end
 
+    # If passed a non-Cell grid, convert first
+    conv_grid = convert(
+        typeof(parent(grid)),
+        reshape(new_grid, size(grid))
+    )
+
     # Calling this constructor requires CircularArrays 1.3.1
-    return typeof(grid)(reshape(new_grid, size(grid)))
+    return typeof(grid)(conv_grid)
 end
