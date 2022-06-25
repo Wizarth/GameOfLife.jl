@@ -2,6 +2,16 @@
 
 using Test
 
+function test_show_text()
+    io = IOBuffer()
+
+    show(io, MIME("text/plain"), glider)
+
+    html = String(take!(io))
+    @test !isempty(html)
+end
+
+
 function test_show_html()
     io = IOBuffer()
 
@@ -21,5 +31,6 @@ function test_show_png()
 end
 
 
+test_show_text()
 test_show_html()
 test_show_png()

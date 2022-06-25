@@ -70,3 +70,14 @@ function Base.show(io::IO, mime::MIME"image/png", grid::AbstractMatrix{Cell})
 
     PNGFiles.save(io, pixels)
 end
+
+function Base.show(io::IO, mime::MIME"text/plain", grid::AbstractMatrix{Cell})
+	# This should be based on io.compact?
+	# This should be using unicode half-blocks to make it even more compact
+	for row = eachrow(grid)
+		for cell = row
+			write(io, cell == Live ? "██" : "  ")
+		end
+		write(io, "\n")
+	end
+end
