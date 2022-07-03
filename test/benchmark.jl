@@ -14,7 +14,7 @@ function random_grid(dims=(512,512))
         dims...
     ))
 
-    @benchmark step_grid($grid)
+    display(@benchmark step_grid($grid))
 end
 
 function random_grid_cuda(dims=(512,512))
@@ -27,7 +27,8 @@ function random_grid_cuda(dims=(512,512))
         )
     )
 
-    @benchmark CUDA.@sync step_grid($grid)
+    display(@benchmark CUDA.@sync step_grid($grid))
 end
 
+random_grid((512,512))
 random_grid_cuda((8192,8192))
